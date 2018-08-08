@@ -31,19 +31,12 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'
         }
       },
-      {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-         
-        }
-      }
     ]
   },
   resolve: {
