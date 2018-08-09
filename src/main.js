@@ -12,10 +12,10 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 
 Vue.use(Vuetify);
-Vue.prototype.$axios = axios 
+Vue.prototype.$axios = axios
 
 new Vue({
   el: '#app',
-  render: h => h(App),
-  router
+  router,
+  render: h => h(App)
 })

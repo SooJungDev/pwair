@@ -3,7 +3,7 @@
         <v-container fluid fill-height text-xs-center>
         <v-layout justify-center column>
          <div mt-5>
-            <p class="display-4 ">PWAir</p> 
+            <p class="display-3 ">PWAir</p> 
             <p class="title">Open the window  when we push you</p> 
         </div>   
         <div>
@@ -18,8 +18,8 @@
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                  <v-text-field prepend-icon="person" name="id" label="Id" type="text"></v-text-field>
-                  <v-text-field prepend-icon="lock" name="password" label="Password" id="password" type="password"></v-text-field>
+                  <v-text-field v-model="email" prepend-icon="person" name="id" label="" type="text"></v-text-field>
+                  <v-text-field v-model="password"  prepend-icon="lock" name="password" label="Password" id="password" type="password"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -37,15 +37,60 @@
 
 <script>
 export default {
+    data(){
+      return{
+        email: '',
+        password: ''
+      }
+    },
     methods: {
+        loginSuccess(){
+         this.$router.push({path:'/main'})
+        },
+        loginFail(){
+          alert("login에 실패하였습니다.다시 시도해주세요.")
+        },
         login(){
+          event.preventDefault();
+           var self= this;
+           var email = this.email.trim();
+           var password =this.password.trim();
+
+          firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(function(result){
+            self.loginSuccess();
+          })
+          .catch(function(error) {
+             self.loginFail();
+          });
 
         },
-        googleLogin(){
-
+        googleLogin(event){
+          event.preventDefault();
+          var provider = new firebase.auth.GoogleAuthProvider();   
+          var self= this;
+          firebase.auth().signInWithPopup(provider)
+          .then(function(result) {
+       
+            var token = result.credential.accessToken;
+            var user = result.user;     
+            self.loginSuccess();
+           })
+           .catch(function(error){
+              self.loginFail();
+           });
         },
         facebookLogin(){
-
+              var provider = new firebase.auth.FacebookAuthProvider();
+              var self= this;
+              firebase.auth().signInWithPopup(provider)
+              .then(function(result) {   
+               var token = result.credential.accessToken;
+               var user = result.user;
+                self.loginSuccess();
+              }).catch(function(error){
+                 self.loginFail();
+              });
         }
     }
 }
