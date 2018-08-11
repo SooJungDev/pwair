@@ -54,6 +54,24 @@ export default {
             var latitude  = position.coords.latitude;
             var longitude = position.coords.longitude;
             console.log(latitude,longitude);
+            var self = this;
+              naver.maps.Service.reverseGeocode({
+                // 역삼역 고정값
+                location: new naver.maps.LatLng(latitude, longitude),
+              }, function(status, response) {
+                if (status !== naver.maps.Service.Status.OK) {
+                  return alert('Something wrong!');
+                }
+                var result = response.result, // 검색 결과의 컨테이너
+                    items = result.items; // 검색 결과의 배열
+                // console.log(items[0].addrdetail.sigugun);
+                var getLocation = items[0].addrdetail.sigugun;
+                console.log(items[0].addrdetail);
+                console.log(getLocation);
+                self.$store.commit('setLocationInfo',getLocation);
+                
+              });
+
           }, function(){
              alert("사용자의 위치를 찾을수 없습니다.")
           });
