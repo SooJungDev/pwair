@@ -45,7 +45,20 @@ export default {
     },
     methods: {
         loginSuccess(){
-         this.$router.push({path:'/main'})
+
+           if (!navigator.geolocation){
+              alert("사용자의 브라우저는 지오로케이션을 지원하지 않습니다.");
+            }
+
+          navigator.geolocation.getCurrentPosition(function(position){
+            var latitude  = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            console.log(latitude,longitude);
+          }, function(){
+             alert("사용자의 위치를 찾을수 없습니다.")
+          });
+
+          this.$router.push({path:'/main'})
         },
         loginFail(){
           alert("login에 실패하였습니다.다시 시도해주세요.")
